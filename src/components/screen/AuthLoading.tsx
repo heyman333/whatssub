@@ -36,8 +36,13 @@ export default function AuthLoading(props: Props) {
   const [isAppReady, setAppReady] = useState(false);
 
   const cacheResourcesAsync = async () => {
-    await Asset.fromModule(IMG_GIF_SPLASH).downloadAsync();
-    setResourcesReady(true);
+    try {
+      await Asset.fromModule(IMG_GIF_SPLASH).downloadAsync();
+    } catch (error) {
+      // handle error
+    } finally {
+      setResourcesReady(true);
+    }
   };
 
   React.useEffect(() => {
@@ -58,6 +63,7 @@ export default function AuthLoading(props: Props) {
     return (
       <Container>
         <StyledSplashImage
+          testID="SPLASH_IMAGE"
           source={IMG_GIF_SPLASH}
           resizeMode='contain'
           onLoadEnd={() => {
